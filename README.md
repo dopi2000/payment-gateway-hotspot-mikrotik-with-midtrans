@@ -1,62 +1,110 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Gerbang Pembayaran dan Pembuatan Voucher Otomatis Dengan Midtrans
+Aplikasi ini dibuat untuk gerbang pembayaran dan pembuatan voucher hotspot WiFi pada mikrotik yang di integrasikan dengan gerbang pembayaran midtrans sebagai penyedia jasa gerbang pembayaran yang digunakan dalam aplikasi ini. Aplikasi ini dibuat menggunkan framework laravel. Aplikasi ini bebas digunakan terkhusus untuk pengusaha rt/rw net serta dimodifikasi atau dikembangkan lebih jauh. developer secara terbuka untuk kolaborasi dalam pengembangan aplikasi ini.
 
-## About Laravel
+[![N|Solid](https://raw.githubusercontent.com/laravel/art/d5f5e725c27f877ed032225fe0b00afee9337d0f/laravel-logo.svg)](https://laravel.com/)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Persyaratan : 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel 12.x.x atau terbaru
+- Tailwind CSS 4.x.x atau terbaru
+- NodeJs 22.x atau yang terbaru
+- mysql 8.x atau sqlite
+- Memilik akun midtrans
+- Memiliki domain publik
 
-## Learning Laravel
+## Fitur
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Halaman Admin
+- Cek status transaksi
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+## Cara penggunaan dan Konfigurasi
+  - Konfigurasi pada file .env  dengan menambahkan variabel berikut :
+     ### Konfigurasi untuk akun midtrans
+    ```sh
+    MIDTRANS_MERCHANT_ID=isi dengan merchant id dari akun midtrans anda
+    MIDTRANS_CLIENT_KEY=isi dengan client key dari akun midtrans anda
+    MIDTRANS_SERVER_KEY=isi dengan server key dari akun midtrans anda
+    MIDTRANS_IS_PRODUCTION=false // masih tahap pegembangan set ke false tapi sudah tahap production set ke true
+    MIDTRANS_IS_SANITIZED=true
+    MIDTRANS_IS_3DS=true
+    ```
+    Note: pada akun midtrans memiliki dua enviroment. jika masih tahap pengembangan gunakan enviroment sandbox pada midtrans dan gunakan server key dan client key pada mode sandbox. jika tahap penggunaan aplikasi ke customer,  maka ganti server key dan client key dengan menggunakan enviroment production.
+    agar status pembayaran user dapat diupdate secara real time. maka set pada akun midtrans anda di menu settings>payment>notification url seperti berikut:
+    https://nama_domain.com/callback. ini bertujuan untuk menerima callback dari midtrans. bisa disetting pada mode production atau sandbox.
+     ### Konfigurasi untuk perangkat mikrotik anda
+    ```sh
+    MIKROTIK_HOST =ip address mikrotik anda
+    MIKROTIK_USERNAME=username anda
+    MIKROTIK_PASSWORD= password anda
+    MIKROTIK_PORT=8728
+    ```
+    Note:Di mikrotik anda jangan lupa, pada menu IP>hostpot>users profile.
+    untuk membuat user profile dengan sesuai paket yang dijual. pada aplikasi ini secara default saya buat 3, yaitu : paket-harian, paket-mingguan, dan paket bulanan dengan konfigurasi masing-masing user profile sesuai dengan konfigurasi paket yang anda tawarkan.
+## Instalasi dan Pemasangan
+Salin repository ini menggunakan git ke folder anda serta jalanakan perintah ini pada terminal
+```sh
+git clone https://github.com/dopi2000/payment_gateway_hotspot_mikrotik_with_midtrans.git
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Tahap Deployment dan Hosting.
 
-### Premium Partners
+Pada tahap ini, untuk hostingan saya menggunakan home server pribadi. Tujuanya agar aplikasi ini dapat berkomunikasi dengan perangkat mikrotik dan tentu saja gratis tanpa menggunakan VPS atau hostingan berbayar. kalau anda menggunakan VPS atau hostingan maka diusahakan aplikasi ini bisa berkomunikasi pada perangkat mikrotik dalam satu jaringan menggunakan vpn.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Home server yang saya gunakan mengunakan stb indihome bekas dengan merek Fiberhome HG-680-P kemdian saya instalakan armbian dan CasaOS.
 
-## Contributing
+ #### Cara deployment mengunakan docker.
+- Pastikan docker sudah terinstall pada perangkat anda.
+- Copykan Aplikasi ini ke folder home server anda. terserah lokasinya folder dimana saja jangan lupa dengan file .env karena secara otomatis linux akan menganggap file tersebut tersembunyi. dan atur file .env pada variabel APP_ENV=production dan  APP_DEBUG=false
+ - ganti izin file seperti perintah berikut 
+    ```
+    sudo chmod -R 755 bootstrap/cache storage public
+    ```
+    jika aplikasi  ketika webserver mengeksekusi  dan terkendala masalah izin file maka untuk  sementara izin file ganti dengan angka 755 dengan 777 
+ - Masuk pada folder aplikasi ini dan jalankan perintah berikut.
+      ```
+      docker compose up --build -d
+      ```
+- Tunggu proses penginstallan selesai
+- Jika sudah selesai jalankan perintah berikut
+  ```
+  docker exec paymentloginhotspot php artisan migrate
+  docker exec paymentloginhotspot php artisan db:seed --force
+  docker exec paymentloginhotspot php artisan optimize
+  ```
+- Untuk akses aplikasi ini pada IP address dari home server anda
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Note: untuk yang diinstall lewat docker compose adalah image php-fpm versi 8.4, kemudian nginx:alpine pada port 80, mysql:8.0 pada port 3306, dan arm64v8/phpmyadmin pada port 808. Jika anda install pada perangkat yang bukan beraksitektur ARM maka ganti nama image untuk yang beraksitetur yang bukan ARM pada file docker-compose.yml dibagian image. untuk nomor port bisa anda kostumisasi pada file docker-compose.yml.
 
-## Code of Conduct
+# Tambahan
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Untuk mengkases halaman admin pada url http://ip_address/login atau http:/nama_domain/login. Untuk username dan password default:
 
-## Security Vulnerabilities
+- ## Username : admin@email.com
+- ## Password : admin
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+ pada file middleware di lokasi folder app/http/middleware/HotspotAccessAllowedMiddleware.php
+ 
+         $allowedIps = [
+            '10.10.10.0/24',
+            '20.20.20.0/24',
+        ];
+pada variabel di atas sesuaikan dengan rentang IP yang anda atur pada mikrotik anda kemudian pada baris kode berikut
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# payment-gateway-hotspot-mikrotik-with-midtrans" 
+        if(!$isValidRequest) {
+            $clientIp = $request->ip();
+            if(IpUtils::checkIp($clientIp, $allowedIps)) {
+                    $isValidRequest = true;
+              if(IpUtils::checkIp($clientIp, '10.10.10.0/24')) {
+                  session()->put('link-hotspot-login', 'http://nama_domain/login');
+                } else {
+                  session()->put('link-hotspot-login', 'http://nama_domain/login');
+              }
+            }
+        }
+sesuiakan dengan nama domain yang anda atur di mikrotik.

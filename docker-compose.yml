@@ -1,0 +1,63 @@
+services:
+      app:
+          build: .
+          image: paymentloginhotspot
+          container_name: paymentloginhotspot
+          restart: unless-stopped
+          tty: true
+          environment: 
+              SERVICE_NAME: app
+          working_dir: /var/www/payment-hotspot-app
+          volumes:
+          - .:/var/www/payment-hotspot-app
+          - ./storage/php.ini:/usr/local/etc/php/conf.d/local.ini
+          networks: 
+          - paymentloginhotspot
+
+      webserver:
+          image: nginx:alpine
+          container_name: nginxlaravelapp
+          restart: unless-stopped
+          tty: true
+          ports:
+           - "80:80"
+          volumes: 
+           - .:/var/www/payment-hotspot-app
+           - ./storage/:/etc/nginx/conf.d/
+          networks: 
+           - paymentloginhotspot
+      db:
+        image: mysql:8.0
+        container_name: mysqllaravelapp
+        restart: always
+        tty: true
+        ports: 
+         - "3306:3306"
+        networks: 
+           - paymentloginhotspot
+        volumes:
+            - lbdata:/var/lib/mysql
+        environment: 
+          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
+          SERVICE_TAGS: dev
+          SERVICE_NAME: mysql
+      phpmyadmin:
+            image: arm64v8/phpmyadmin
+            container_name: phpmyadminlaravel
+            links:
+                - db
+            restart: always
+            ports: 
+              - "808:80"
+            networks: 
+                - paymentloginhotspot
+#NETWORKS 
+networks:
+  paymentloginhotspot: 
+    driver: bridge
+
+# VOLUMES
+volumes:
+  lbdata: 
+   driver: local
