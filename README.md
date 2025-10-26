@@ -47,7 +47,7 @@ Aplikasi ini dibuat untuk gerbang pembayaran dan pembuatan voucher hotspot WiFi 
 ## Instalasi dan Pemasangan
 Salin repository ini menggunakan git ke folder anda serta jalanakan perintah ini pada terminal
 ```sh
-git clone https://github.com/dopi2000/payment_gateway_hotspot_mikrotik_with_midtrans.git
+git clone https://github.com/dopi2000/payment-gateway-hotspot-mikrotik-with-midtrans.git
 composer install
 ```
 
