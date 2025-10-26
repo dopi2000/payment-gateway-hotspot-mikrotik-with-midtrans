@@ -50,6 +50,11 @@ Salin repository ini menggunakan git ke folder anda serta jalanakan perintah ini
 git clone https://github.com/dopi2000/payment-gateway-hotspot-mikrotik-with-midtrans.git
 composer install
 ```
+Langkah selanjutnya buat dulu file .env 
+  ```
+  cp .env.example .env
+  
+  ```
 
 ## Tahap Deployment dan Hosting.
 
@@ -72,6 +77,7 @@ Home server yang saya gunakan mengunakan stb indihome bekas dengan merek Fiberho
 - Tunggu proses penginstallan selesai
 - Jika sudah selesai jalankan perintah berikut
   ```
+  docker exec paymentloginhotspot php artisan key:generate
   docker exec paymentloginhotspot php artisan migrate
   docker exec paymentloginhotspot php artisan db:seed --force
   docker exec paymentloginhotspot php artisan optimize
@@ -86,6 +92,11 @@ Untuk mengkases halaman admin pada url http://ip_address/login atau http:/nama_d
 
 - ## Username : admin@email.com
 - ## Password : admin
+
+Untuk mengakses halaman phpmyadmin pada url  http://ip_address:808 atau http:/nama_domain:808
+
+- ## Username : root
+- ## Password : root
 
 
  pada file middleware di lokasi folder app/http/middleware/HotspotAccessAllowedMiddleware.php
